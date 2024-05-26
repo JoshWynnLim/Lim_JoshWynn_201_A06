@@ -1,7 +1,7 @@
 ---
 title: "Assignment 6"
 subtitle: "STAT 201"
-author: "YOUR NAME"
+author: "Josh Wynn Lim"
 
 format:
   html:
@@ -48,9 +48,8 @@ To get full credit for this Question you must:
 
 ## Github Repo Link
 
-[https://your-github-repo-url](https://your-github-repo-url)
+[https://github.com/JoshWynnLim/Lim_JoshWynn_201_A06.git]
 
-:::
 
 ::: {.callout-tip icon=false}
 
@@ -102,7 +101,9 @@ Extract the value `8162` (LeBron James points) in 2 different ways:
 - using names
 
 ```{r}
+print(player_info[[2]][[4]])
 
+print(player_info[["LJ"]]$points)
 ```
 
 
@@ -113,7 +114,13 @@ Add a new named element to the end of each player's list called `height`. The he
 Print the `player_info` list to prove you were successful.
 
 ```{r}
+player_info[["MJ"]]<-append(player_info[["MJ"]], list(height = 78))
+player_info[["LJ"]]<-append(player_info[["LJ"]], list(height = 81))
+player_info[["KB"]]<-append(player_info[["KB"]], list(height = 78))
+player_info[["KA"]]<-append(player_info[["KA"]], list(height = 86))
+player_info[["SO"]]<-append(player_info[["SO"]], list(height = 85))
 
+print(player_info)
 ```
 
 
@@ -132,6 +139,14 @@ Hint: initialize an empty list
 Note: this must still run correctly even if the values were to change or if another player were added to the list or if the player order changed.
 
 ```{r}
+points_per_game <- list()
+
+for(name in names(player_info)){
+  ppg <- (player_info[[name]]$points) / (player_info[[name]]$games_played)
+  
+  points_per_game[[name]] <- ppg
+}
+print(points_per_game)
 
 ```
 
@@ -143,7 +158,7 @@ Use the list created in Part c and an appropriate apply function to round each v
 Store the output as a vector and print the results.
 
 ```{r}
-
+lapply(points_per_game, round, 2)
 ```
 
 
@@ -164,7 +179,19 @@ ie: 91 rounds to 90; 173 rounds to 200; 1450 rounds to 1000
 Hint: use `MARGIN = 1:2` to apply the function to each value instead of only a row/col.
 
 ```{r}
+roundin <- function(x) {
+  if(x < 100) {
+    return(round(x, digits = -1))
+  } else if(x < 1000){
+    return(round(x, digits = -2))
+  } else {
+    return(round(x, digits = -3))
+  }
+}
 
+rounded_matrix <- apply(mat_rand, MARGIN = 1:2, roundin)
+
+print(rounded_matrix)
 ```
 
 
@@ -189,6 +216,14 @@ Calculate the average temperature for each month across the whole data frame (us
 
 ```{r}
 
+months <- c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec")
+values <- list()
+for(i in 3:ncol(max_temps)){
+  temp <- (((mean(max_temps[[i]], na.rm = TRUE))))
+  values[[i-2]] <- list(month = months[i-2], temp = temp)
+}
+print(values)
+
 ```
 
 
@@ -203,7 +238,9 @@ Create three new data frames by slicing the data by state.
 No need to print any output here.
 
 ```{r}
-
+Colorado <- max_temps[1:126, c(1:14)]
+Ohio <- max_temps[127:252, c(1:14)]
+Virginia <- max_temps[253:378, c(1:14)]
 ```
 
 
@@ -224,7 +261,13 @@ Example (this is NOT the answer just an example of what goes in the {}):
 Note: This code should still run successfully even if the numbers were to change.
 
 ```{r}
+medianC <- apply(Colorado[3:14], 1, median, na.rm = TRUE)
+max_med <- max(medianC)
+Col_max <- Colorado$year[which.max(medianC)]
+min_med <- min(medianC)
+Col_min <- Colorado$year[which.min(medianC)]
 
+print(paste0("The maximum median annual temperature of ", max_med, " occured in ", Col_max, " and the minimum median annual temeperature of ", min_med, " occured in ", Col_min, "."))
 ```
 
 
@@ -237,6 +280,11 @@ Example: The number 312 would return 6 (3 + 1 + 2)
 Run your function with 935068.
 
 ```{r}
-
+rec_fun <- function(x){
+if (x == 0) {
+  return(0) } 
+x %% 10 + rec_fun(x %/% 10)
+}
+rec_fun(935068)
 ```
 
