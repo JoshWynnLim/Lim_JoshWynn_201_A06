@@ -55,7 +55,7 @@ To get full credit for this Question you must:
 
 ## Screenshot/image of RStudio
 
-![](filepath.png)
+![](/Users/joshwynngokongweilim/Desktop/Gitupload.png)
 
 :::
 
